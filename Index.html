@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Svatba Lucie & Tomáš</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f7f7f7;
+      color: #333;
+    }
+    header {
+      background: #111;
+      color: white;
+      text-align: center;
+      padding: 60px 20px;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 2.5rem;
+    }
+    header p {
+      margin-top: 10px;
+      font-size: 1.2rem;
+    }
+    section {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 20px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+    h2 {
+      margin-top: 0;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    input, select, button {
+      padding: 10px;
+      font-size: 1rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background: #111;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #333;
+    }
+    .results {
+      margin-top: 20px;
+    }
+    .gallery img {
+      width: 100%;
+      margin-top: 10px;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Lucie & Tomáš</h1>
+  <p>27. 10. 2026</p>
+  <p>Těšíme se na Vás ❤️</p>
+</header>
+
+<section>
+  <h2>Informace</h2>
+  <p>Vítejte na naší svatební stránce. Najdete zde důležité informace a můžete nám dát vědět, co budete pít 😊</p>
+</section>
+
+<section>
+  <h2>Dotazník</h2>
+  <form id="weddingForm">
+    <input type="text" id="name" placeholder="Vaše jméno" required />
+    <select id="drink" required>
+      <option value="">Co budete pít?</option>
+      <option value="Pivo">Pivo</option>
+      <option value="Víno">Víno</option>
+      <option value="Nealko">Nealko</option>
+      <option value="Tvrdý alkohol">Tvrdý alkohol</option>
+    </select>
+    <button type="submit">Odeslat</button>
+  </form>
+
+  <div class="results" id="results"></div>
+</section>
+
+<section>
+  <h2>Fotogalerie</h2>
+  <div class="gallery">
+    <!-- Sem si přidej vlastní fotky -->
+    <!-- <img src="foto1.jpg" /> -->
+    <!-- <img src="foto2.jpg" /> -->
+  </div>
+</section>
+
+<script>
+  const form = document.getElementById('weddingForm');
+  const resultsDiv = document.getElementById('results');
+
+  function loadResults() {
+    const data = JSON.parse(localStorage.getItem('weddingData')) || [];
+    resultsDiv.innerHTML = '<h3>Odpovědi hostů:</h3>';
+    data.forEach(entry => {
+      const div = document.createElement('div');
+      div.textContent = entry.name + ' – ' + entry.drink;
+      resultsDiv.appendChild(div);
+    });
+  }
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const name = document.getElementById('name').value;
+    const drink = document.getElementById('drink').value;
+
+    const data = JSON.parse(localStorage.getItem('weddingData')) || [];
+    data.push({ name, drink });
+    localStorage.setItem('weddingData', JSON.stringify(data));
+
+    form.reset();
+    loadResults();
+  });
+
+  loadResults();
+</script>
+
+</body>
+</html>
